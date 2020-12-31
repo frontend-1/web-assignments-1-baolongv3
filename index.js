@@ -10,8 +10,8 @@ window.onload = () => {
     loadTable();
 
 }
-function addData(e){
-    e.preventDefault();
+function addData(){
+
     let data = formToJSON();
     var employee = new Employee(data.name,data.age,data.address,data.yoe,data.phoneNumber,data.email,data.joinDate);
     let currentSession = internalStorage.getItem('currentList');
@@ -38,6 +38,16 @@ function formToJSON(){
     return JSON;
 }
 
+function removeEmployee(button){
+    index = button.parentNode.parentNode.children[0].innerHTML;
+    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
+    currentSession = currentSession.splice(index,1);
+    internalStorage.setItem('currentList',JSON.stringify(currentSession));
+    location.reload();
+
+}
+
+
 function loadTable(){
     var currentSession = JSON.parse(internalStorage.getItem('currentList'));
     var bodyref = document.getElementById('emp-table').getElementsByTagName('tbody')[0];
@@ -55,6 +65,8 @@ function loadTable(){
             var cell5 = row.insertCell(5);
             var cell6 = row.insertCell(6);
             var cell7 = row.insertCell(7);
+            var cell8 = row.insertCell(8);
+            var cell9 = row.insertCell(9);
             cell0.innerHTML = ++i;
             cell1.innerHTML = item.name;
             cell2.innerHTML = item.age;
@@ -63,7 +75,8 @@ function loadTable(){
             cell5.innerHTML = item.phoneNumber;
             cell6.innerHTML = item.email;
             cell7.innerHTML = item.joinDate;
-
+            cell8.innerHTML = "<button class='btn btn-secondary'>U</button>";
+            cell9.innerHTML = "<button class='btn btn-danger' onclick='removeEmployee(this)'>X</button>";
 
             
         }
