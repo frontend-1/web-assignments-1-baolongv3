@@ -38,13 +38,6 @@ function formToJSON(){
     return JSON;
 }
 
-function removeEmployee(index){
-    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    currentSession = currentSession.splice(index,1);
-    internalStorage.setItem('currentList',JSON.stringify(currentSession));
-    location.reload();
-
-}
 
 
 function loadTable(){
