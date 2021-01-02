@@ -189,7 +189,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Index</span>
                             </div>
-                            <input type="number" class="form-control" name="index" min="1" value="1" onchange='reloadDeleteForm()' required>
+                            <input type="number" class="form-control" name="index" min="1" onchange='reloadDeleteForm()' required>
                         </div>
                         <div>
                             <table class="table" id="delete-table">
@@ -226,7 +226,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                    <form id="search-form">
+                    <form id="search-form" onsubmit="return false;">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Name</span>

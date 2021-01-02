@@ -1,41 +1,45 @@
 internalStorage = window.localStorage;
 
 window.onload = () => {
-    if (internalStorage.getItem('currentList') === null) {
-        internalStorage.setItem('currentList', '[]');
+    if (internalStorage.getItem("currentList") === null) {
+        internalStorage.setItem("currentList", "[]");
     }
     loadTable();
-
-}
+};
 
 const AlertTemplate = swal.mixin({
     customClass: {
-        confirmButton: 'btn btn-success mr-2',
-        cancelButton: 'btn btn-danger mr-2'
+        confirmButton: "btn btn-success mr-2",
+        cancelButton: "btn btn-danger mr-2",
     },
-    buttonsStyling: false
-})
+    buttonsStyling: false,
+});
 
 function addData() {
-
     let data = formToJSON();
-    var employee = new Employee(data.name, data.age, data.address, data.yoe, data.phoneNumber, data.email, data.joinDate);
-    let currentSession = internalStorage.getItem('currentList');
+    var employee = new Employee(
+        data.name,
+        data.age,
+        data.address,
+        data.yoe,
+        data.phoneNumber,
+        data.email,
+        data.joinDate
+    );
+    let currentSession = internalStorage.getItem("currentList");
     if (currentSession === null) {
         let currentSession = new Array();
         currentSession.push(employee);
-        internalStorage.setItem('currentList', JSON.stringify(currentSession));
+        internalStorage.setItem("currentList", JSON.stringify(currentSession));
     } else {
-        let currentSession = JSON.parse(internalStorage.getItem('currentList'));
+        let currentSession = JSON.parse(internalStorage.getItem("currentList"));
         currentSession.push(employee);
-        internalStorage.setItem('currentList', JSON.stringify(currentSession));
-
+        internalStorage.setItem("currentList", JSON.stringify(currentSession));
     }
-
 }
 
 function formToJSON() {
-    let formData = new FormData(document.querySelector('#add-form'))
+    let formData = new FormData(document.querySelector("#add-form"));
     let JSON = {};
     for (var pair of formData) {
         JSON[pair[0]] = pair[1];
@@ -43,11 +47,11 @@ function formToJSON() {
     return JSON;
 }
 
-
-
 function loadTable() {
-    var currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    var bodyref = document.getElementById('emp-table').getElementsByTagName('tbody')[0];
+    var currentSession = JSON.parse(internalStorage.getItem("currentList"));
+    var bodyref = document
+        .getElementById("emp-table")
+        .getElementsByTagName("tbody")[0];
     var i = 0;
     if (Array.isArray()) {
         return;
@@ -70,16 +74,13 @@ function loadTable() {
             cell5.innerHTML = item.phoneNumber;
             cell6.innerHTML = item.email;
             cell7.innerHTML = item.joinDate;
-
-
         }
     }
 }
 
-
 function updateEmployee() {
-    var currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    let form = document.getElementById('update-form');
+    var currentSession = JSON.parse(internalStorage.getItem("currentList"));
+    let form = document.getElementById("update-form");
     let index = form.childNodes[1].childNodes[3].value - 1;
     currentSession[index].name = form.childNodes[3].childNodes[3].value;
     currentSession[index].age = form.childNodes[5].childNodes[3].value;
@@ -89,14 +90,12 @@ function updateEmployee() {
     currentSession[index].email = form.childNodes[13].childNodes[3].value;
     currentSession[index].joinDate = form.childNodes[15].childNodes[3].value;
 
-    internalStorage.setItem('currentList', JSON.stringify(currentSession));
-
-
-
+    internalStorage.setItem("currentList", JSON.stringify(currentSession));
 }
 
 function currentSessionLength() {
-    return JSON.parse(internalStorage.getItem('currentList')).length;
+    console.log(JSON.parse(internalStorage.getItem("currentList"))[0]);
+    return JSON.parse(internalStorage.getItem("currentList")).length;
 }
 
 function setMaxIndex(formTarget) {
@@ -105,11 +104,11 @@ function setMaxIndex(formTarget) {
 }
 
 function reloadDeleteForm() {
-    let form = document.getElementById('delete-form');
+    let form = document.getElementById("delete-form");
     let index = form.childNodes[1].childNodes[3].value - 1;
-    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    let tbodyref = form.getElementsByTagName('tbody')[0];
-    if (document.querySelectorAll('#delete-table tbody tr').length == 0) {
+    let currentSession = JSON.parse(internalStorage.getItem("currentList"));
+    let tbodyref = form.getElementsByTagName("tbody")[0];
+    if (document.querySelectorAll("#delete-table tbody tr").length == 0) {
         var row = tbodyref.insertRow();
         var cell0 = row.insertCell(0);
         var cell1 = row.insertCell(1);
@@ -128,7 +127,7 @@ function reloadDeleteForm() {
         cell6.innerHTML = currentSession[index].email;
         cell7.innerHTML = currentSession[index].joinDate;
     } else {
-        document.querySelectorAll('#delete-table tbody tr')[0].remove();
+        document.querySelectorAll("#delete-table tbody tr")[0].remove();
         var row = tbodyref.insertRow();
         var cell0 = row.insertCell(0);
         var cell1 = row.insertCell(1);
@@ -147,41 +146,40 @@ function reloadDeleteForm() {
         cell6.innerHTML = currentSession[index].email;
         cell7.innerHTML = currentSession[index].joinDate;
     }
-
 }
 
 function reloadUpdateForm() {
-    let form = document.getElementById('update-form');
-    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
+    let form = document.getElementById("update-form");
+    let currentSession = JSON.parse(internalStorage.getItem("currentList"));
     let index = form.childNodes[1].childNodes[3].value;
     form.childNodes[3].childNodes[3].value = currentSession[index - 1].name;
     form.childNodes[5].childNodes[3].value = currentSession[index - 1].age;
     form.childNodes[7].childNodes[3].value = currentSession[index - 1].address;
     form.childNodes[9].childNodes[3].value = currentSession[index - 1].YOE;
-    form.childNodes[11].childNodes[3].value = currentSession[index - 1].phoneNumber;
+    form.childNodes[11].childNodes[3].value =
+        currentSession[index - 1].phoneNumber;
     form.childNodes[13].childNodes[3].value = currentSession[index - 1].email;
     form.childNodes[15].childNodes[3].value = currentSession[index - 1].joinDate;
-
 }
 
 function promptAddAlert() {
     AlertTemplate.fire({
-        icon: 'warning',
-        title: 'Confirmation',
-        text: 'Do you want to add this employee?',
-        confirmButtonText: 'Yes',
+        icon: "warning",
+        title: "Confirmation",
+        text: "Do you want to add this employee?",
+        confirmButtonText: "Yes",
         showCancelButton: true,
-        cancelButtonText: 'No'
-
+        cancelButtonText: "No",
     }).then((result) => {
         if (result.isConfirmed) {
             addData();
-            swal.fire({
-                icon: 'success',
-                title: "Success!",
-                text: 'Successfully Added Employee!'
-            }).then(() => location.reload());
-
+            swal
+                .fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Successfully Added Employee!",
+                })
+                .then(() => location.reload());
         } else {
             location.reload();
         }
@@ -190,22 +188,22 @@ function promptAddAlert() {
 
 function promptUpdateAlert() {
     AlertTemplate.fire({
-        icon: 'info',
-        title: 'Confirmation',
-        text: 'Do you want to update this employee?',
-        confirmButtonText: 'Yes',
+        icon: "info",
+        title: "Confirmation",
+        text: "Do you want to update this employee?",
+        confirmButtonText: "Yes",
         showCancelButton: true,
-        cancelButtonText: 'No'
-
+        cancelButtonText: "No",
     }).then((result) => {
         if (result.isConfirmed) {
             updateEmployee();
-            swal.fire({
-                icon: 'success',
-                title: "Success!",
-                text: 'Successfully Updated Employee!'
-            }).then(() => location.reload());
-
+            swal
+                .fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Successfully Updated Employee!",
+                })
+                .then(() => location.reload());
         } else {
             location.reload();
         }
@@ -214,23 +212,22 @@ function promptUpdateAlert() {
 
 function promptDeleteAlert() {
     AlertTemplate.fire({
-        icon: 'error',
-        title: 'Confirmation',
-        text: 'Do you want to delete this employee?',
-        confirmButtonText: 'Yes',
+        icon: "error",
+        title: "Confirmation",
+        text: "Do you want to delete this employee?",
+        confirmButtonText: "Yes",
         showCancelButton: true,
-        cancelButtonText: 'No'
-
+        cancelButtonText: "No",
     }).then((result) => {
         if (result.isConfirmed) {
             removeEmployee();
-            swal.fire({
-                icon: 'success',
-                title: "Success!",
-                text: 'Successfully Deleted Employee!'
-            }).then(() => location.reload());
-
-
+            swal
+                .fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Successfully Deleted Employee!",
+                })
+                .then(() => location.reload());
         } else {
             location.reload();
         }
@@ -238,10 +235,10 @@ function promptDeleteAlert() {
 }
 
 function searchUser() {
-    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    let form = document.getElementById('search-form');
+    let currentSession = JSON.parse(internalStorage.getItem("currentList"));
+    let form = document.getElementById("search-form");
     let searchName = form.childNodes[1].childNodes[3].value;
-    let tBodyName = form.getElementsByTagName('tbody')[0];
+    let tBodyName = form.getElementsByTagName("tbody")[0];
     let i = 0;
     let result = currentSession.filter((item) => {
         return item.name.includes(searchName);
@@ -272,14 +269,15 @@ function searchUser() {
 }
 
 function removeEmployee() {
-    let form = document.getElementById('delete-form');
-    let currentSession = JSON.parse(internalStorage.getItem('currentList'));
-    let index = form.childNodes[1].childNodes[3].value;
-    currentSession = currentSession.splice(index, 1);
-    internalStorage.setItem('currentList', JSON.stringify(currentSession));
+    let form = document.getElementById("delete-form");
+    let currentSession = JSON.parse(internalStorage.getItem("currentList"));
+    let index = form.childNodes[1].childNodes[3].value - 1;
+    currentSession.splice(index, 1);
+    internalStorage.setItem("currentList", JSON.stringify(currentSession));
+    console.log(currentSession);
     location.reload;
 }
-//Model 
+//Model
 class Employee {
     constructor(name, age, address, YOE, phoneNumber, email, joinDate) {
         this.name = name;
@@ -290,5 +288,4 @@ class Employee {
         this.email = email;
         this.joinDate = joinDate;
     }
-
 }
